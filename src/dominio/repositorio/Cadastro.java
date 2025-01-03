@@ -9,6 +9,7 @@ import java.util.*;
 public class Cadastro {
     private static final String DIRETORIO_USUARIOS = "cadastros/";
     private static final String FORMULARIO_ARQUIVO = "formulario.txt";
+
     public Cadastro() {
         File diretorio = new File(DIRETORIO_USUARIOS);
         if (!diretorio.exists()) {
@@ -19,19 +20,19 @@ public class Cadastro {
     public void cadastrarUsuario(Usuario usuario) throws NameFormatException, EmailFormatException, EmailExistException,
             AgeException, HeightFormatException {
         List<String> erros = new ArrayList<>();
-        if (usuario.getNome().length()<10){
+        if (usuario.getNome().length() < 10) {
             throw new NameFormatException();
         }
-        if (!usuario.getEmail().contains("@")){
-            throw  new EmailFormatException();
+        if (!usuario.getEmail().contains("@")) {
+            throw new EmailFormatException();
         }
-        if (emailJaCadastrado(usuario.getEmail())){
+        if (emailJaCadastrado(usuario.getEmail())) {
             throw new EmailExistException();
         }
-        if (usuario.getIdade()<= 18){
-            throw  new AgeException();
+        if (usuario.getIdade() <= 18) {
+            throw new AgeException();
         }
-        if (usuario.getAltura().contains(",")){
+        if (usuario.getAltura().contains(",")) {
             throw new HeightFormatException();
         }
         File arquivoUsuario = new File(DIRETORIO_USUARIOS + "/" + usuario.getEmail() + ".txt");
@@ -42,7 +43,8 @@ public class Cadastro {
         }
 
     }
-    public boolean emailJaCadastrado (String email){
+
+    public boolean emailJaCadastrado(String email) {
         File arquivo = new File(DIRETORIO_USUARIOS + "/" + ".txt");
         return arquivo.exists();
     }
@@ -84,6 +86,7 @@ public class Cadastro {
             System.out.println("Nenhum usuário cadastrado.");
         }
     }
+
     private String formatarNome(String nome) {
         String nomeComEspacos = nome.replaceAll("([a-z])([A-Z])", "$1 $2");
         String[] partesNome = nomeComEspacos.split(" ");
@@ -131,16 +134,22 @@ public class Cadastro {
         }
         return perguntas;
     }
-    public void cadastrarNovaPergunta(String novaPergunta) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FORMULARIO_ARQUIVO, true))) {
-            writer.write(novaPergunta);
-            writer.newLine();
-            System.out.println("Nova Pergunta Cadastrada Com Sucesso");
 
+    public void cadastrarNovaPergunta(String novaPergunta) {
+        try {
+            List<String> perguntas = lerArquivo(FORMULARIO_ARQUIVO);
+            int proximoNumero = perguntas.size() + 1;
+            String perguntaComNumero = proximoNumero + " - " + novaPergunta;
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(FORMULARIO_ARQUIVO, true))) {
+                writer.write(perguntaComNumero);
+                writer.newLine();
+                System.out.println("Nova pergunta cadastrada com sucesso: " + perguntaComNumero);
+            }
         } catch (IOException e) {
-            System.out.println("Erro ao Adicionar Pergunta" + e.getMessage());
+            System.out.println("Erro ao adicionar pergunta: " + e.getMessage());
         }
     }
+
     private List<String> lerArquivo(String caminhoArquivo) {
         List<String> perguntas = new ArrayList<>();
         System.out.println("Lendo Arquivo" + caminhoArquivo);
@@ -161,8 +170,8 @@ public class Cadastro {
             System.out.println("Nenhuma pergunta disponível para excluir.");
             return;
         }
-        if (indice <4){
-            System.out.println("Erro não é permitido excluir as 4 primeiras perguntas");
+        if (indice < 4) {
+            System.out.println("Erro: Não é permitido excluir as 4 primeiras perguntas.");
             return;
         }
         if (indice >= 0 && indice < perguntas.size()) {
@@ -177,9 +186,10 @@ public class Cadastro {
                 System.err.println("Erro ao excluir pergunta: " + e.getMessage());
             }
         } else {
-            System.out.println("Número inválido. Escolha um número entre 5 e." + perguntas.size() + ".");
+            System.out.println("Número inválido. Escolha um número entre 5 e " + perguntas.size() + ".");
         }
     }
+
     public void pesquisarUsuario(String pesquisa) {
         File diretorio = new File(DIRETORIO_USUARIOS);
         if (diretorio.exists() && diretorio.isDirectory()) {
@@ -206,6 +216,7 @@ public class Cadastro {
             System.out.println("Diretório de cadastros não encontrado.");
         }
     }
+
     public void buscarUsuarios(String termo) {
         File diretorio = new File(DIRETORIO_USUARIOS);
         File[] arquivos = diretorio.listFiles((dir, name) -> name.endsWith(".txt"));
@@ -235,6 +246,6 @@ public class Cadastro {
         }
     }
 
-    }
+}
 
 

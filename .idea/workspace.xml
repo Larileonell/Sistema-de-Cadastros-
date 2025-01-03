@@ -6,18 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="04ca91a0-ea1b-4dab-b4fb-7c92870efa92" name="Changes" comment="">
       <change afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controller/UsuarioController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dominio/exceptions/AgeException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dominio/exceptions/EmailExistException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dominio/exceptions/EmailFormatException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dominio/exceptions/HeightFormatException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dominio/exceptions/NameFormatException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/vision/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Cadastro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dominio/repositorio/Cadastro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dominio/entidade/usuario/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dominio/repositorio/Cadastro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dominio/repositorio/Cadastro.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Sistema-Cadastros/ formulario.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../Sistema-Cadastros/.idea/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../Sistema-Cadastros/.idea/misc.xml" beforeDir="false" />
