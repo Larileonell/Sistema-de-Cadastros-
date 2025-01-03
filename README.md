@@ -41,8 +41,8 @@ Sistema de cadastro de usuários via CLI (Interface de Linha de Comando) desenvo
    git clone <URL_DO_REPOSITORIO>
  
   
-1- Faça um fork do repositório.
-2- Crie uma branch com suas mudanças: git checkout -b minha-branch.
-3- Faça commit das suas alterações: git commit -m 'Adicionando nova funcionalidade'.
-4- Push para o repositório: git push origin minha-branch.
-5- Abra um pull request. 
+- Faça um fork do repositório.
+- Crie uma branch com suas mudanças: git checkout -b minha-branch.
+-  Faça commit das suas alterações: git commit -m 'Adicionando nova funcionalidade'.
+- Push para o repositório: git push origin minha-branch.
+- Abra um pull request. 
