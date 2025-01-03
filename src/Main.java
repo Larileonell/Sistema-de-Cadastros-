@@ -74,8 +74,8 @@ public class Main {
         }
 
         public static void pesquisarUsuario(Scanner scanner, Cadastro cadastro) {
-            String pesquisa = obterResposta(scanner, "Digite o nome, idade ou e-mail para pesquisa:");
-            cadastro.pesquisarUsuario(pesquisa);
+            String termo = obterResposta(scanner, "Digite o nome, idade ou e-mail para pesquisa:");
+            cadastro.buscarUsuarios(termo);
         }
 
         public static String obterResposta(Scanner scanner, String pergunta) {

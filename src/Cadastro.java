@@ -1,7 +1,5 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Cadastro {
     private static final String DIRETORIO_USUARIOS = "cadastros/";
@@ -190,6 +188,39 @@ public class Cadastro {
             System.out.println("Diretório de cadastros não encontrado.");
         }
     }
+    public void buscarUsuarios(String termo) {
+        File diretorio = new File(DIRETORIO_USUARIOS);
+        File[] arquivos = diretorio.listFiles((dir, name) -> name.endsWith(".txt"));
+
+        if (arquivos != null && arquivos.length > 0) {
+            List<String> usuariosEncontrados = new ArrayList<>();
+
+            // Iterar sobre os arquivos e verificar se o nome do usuário contém o termo pesquisado
+            for (File arquivo : arquivos) {
+                String nomeUsuario = arquivo.getName().replace(".txt", "");
+
+                // Verifica se o nome do usuário contém o termo, ignorando maiúsculas e minúsculas
+                if (nomeUsuario.toLowerCase().contains(termo.toLowerCase())) {
+                    usuariosEncontrados.add(formatarNome(nomeUsuario)); // Adiciona o nome formatado à lista
+                }
+            }
+
+            // Ordena os usuários encontrados
+            Collections.sort(usuariosEncontrados);
+
+            // Exibe os resultados
+            if (!usuariosEncontrados.isEmpty()) {
+                System.out.println("Usuários encontrados:");
+                for (int i = 0; i < usuariosEncontrados.size(); i++) {
+                    System.out.println((i + 1) + " - " + usuariosEncontrados.get(i)); // Exibe a lista de usuários
+                }
+            } else {
+                System.out.println("Nenhum usuário encontrado para o termo de pesquisa: " + termo);
+            }
+        } else {
+            System.out.println("Nenhum usuário cadastrado.");
+        }
+    }
+    }
 
 
-}
