@@ -63,6 +63,9 @@ public class Main {
         public static void cadastrarNovaPergunta(Scanner scanner, Cadastro cadastro) {
             String novaPergunta = obterResposta(scanner, "Digite a nova pergunta para o formulário:");
             cadastro.cadastrarNovaPergunta(novaPergunta);
+            System.out.println("Perguntas no formulário agora:");
+            List<String> perguntas = cadastro.lerFormulario();
+            perguntas.forEach(System.out::println);
         }
 
         public static void deletarPergunta(Scanner scanner, Cadastro cadastro) {

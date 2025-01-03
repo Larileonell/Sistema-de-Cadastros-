@@ -9,19 +9,19 @@ public class Cadastro {
 
     public void cadastrarUsuario(Usuario usuario) {
         try {
-            // Cria o diretório de cadastros se não existir
+            // Cria o diretório de cadastros, se não existir
             File diretorio = new File(DIRETORIO_USUARIOS);
             if (!diretorio.exists()) {
-                diretorio.mkdir();  // Cria o diretório se ele não existir
+                diretorio.mkdir(); // Cria o diretório
             }
 
             // Define o nome do arquivo com base no nome do usuário
-            String nomeArquivo = DIRETORIO_USUARIOS + usuario.getNome().toUpperCase().replace(" ", "") + ".txt";
+            String nomeArquivo = DIRETORIO_USUARIOS + usuario.getNome().toUpperCase().replaceAll("[^A-Za-z0-9]", "") + ".txt";
 
-            // Chama o método salvarRespostasEmArquivo para salvar as informações no arquivo
-            salvarRespostasEmArquivo(nomeArquivo, usuario);  // Passando o arquivo e o objeto Usuario como parâmetro
+            // Salva as respostas no arquivo
+            salvarRespostasEmArquivo(nomeArquivo, usuario);
 
-            System.out.println("Cadastro realizado com sucesso!");
+            System.out.println("Cadastro realizado com sucesso! Arquivo: " + nomeArquivo);
         } catch (IOException e) {
             System.err.println("Erro ao cadastrar o usuário: " + e.getMessage());
         }
@@ -52,31 +52,71 @@ public class Cadastro {
 
         if (arquivos != null && arquivos.length > 0) {
             System.out.println("Usuários cadastrados:");
+            int contador = 1;
             for (File arquivo : arquivos) {
-
                 String nomeUsuario = arquivo.getName().replace(".txt", "");
-                System.out.println(nomeUsuario);
+                String nomeFormatado = formatarNome(nomeUsuario);
+                String[] nomes = nomeFormatado.split(" ");
+                String nomeExibido = nomes.length > 1 ? nomes[0] + " " + nomes[1] : nomes[0];
+                System.out.println(contador + " - " + nomeExibido);
+                contador++;
             }
         } else {
             System.out.println("Nenhum usuário cadastrado.");
         }
     }
 
+    private String formatarNome(String nome) {
+        String nomeComEspacos = nome.replaceAll("([a-z])([A-Z])", "$1 $2");
+        String[] partesNome = nomeComEspacos.split(" ");
+        StringBuilder nomeFinal = new StringBuilder();
+        for (String parte : partesNome) {
+            if (!parte.isEmpty()) {
+                nomeFinal.append(parte.substring(0, 1).toUpperCase());
+                nomeFinal.append(parte.substring(1).toLowerCase());
+                nomeFinal.append(" ");
+            }
+        }
+        return nomeFinal.toString().trim();
+    }
+
     public List<String> lerFormulario() {
         List<String> perguntas = new ArrayList<>();
+        File arquivoFormulario = new File(FORMULARIO_ARQUIVO);
+
+        // Verifica se o arquivo existe
+        if (!arquivoFormulario.exists()) {
+            try {
+                // Cria o arquivo vazio e adiciona perguntas iniciais
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(FORMULARIO_ARQUIVO))) {
+                    writer.write("Qual seu nome completo?");
+                    writer.newLine();
+                    writer.write("Qual sua idade?");
+                    writer.newLine();
+                    writer.write("Qual seu email?");
+                    writer.newLine();
+                    writer.write("Qual sua altura?");
+                    writer.newLine();
+                }
+                System.out.println("Arquivo 'formulario.txt' criado com perguntas iniciais.");
+            } catch (IOException e) {
+                System.err.println("Erro ao criar o arquivo do formulário: " + e.getMessage());
+            }
+        }
+
+        // Continua a leitura do arquivo
         try (BufferedReader br = new BufferedReader(new FileReader(FORMULARIO_ARQUIVO))) {
             String linha;
             while ((linha = br.readLine()) != null) {
-                perguntas.add(linha); // Adiciona cada linha do arquivo à lista
+                perguntas.add(linha);
             }
         } catch (IOException e) {
             System.err.println("Erro ao ler o arquivo do formulário: " + e.getMessage());
         }
         return perguntas;
     }
-
     public void cadastrarNovaPergunta(String novaPergunta) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FORMULARIO_ARQUIVO))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FORMULARIO_ARQUIVO, true))) {
             writer.write(novaPergunta);
             writer.newLine();
             System.out.println("Nova Pergunta Cadastrada Com Sucesso");
@@ -85,9 +125,9 @@ public class Cadastro {
             System.out.println("Erro ao Adicionar Pergunta" + e.getMessage());
         }
     }
-
     private List<String> lerArquivo(String caminhoArquivo) {
         List<String> perguntas = new ArrayList<>();
+        System.out.println("Lendo Arquivo" + caminhoArquivo);
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
             String linha;
             while ((linha = br.readLine()) != null) {
@@ -105,7 +145,10 @@ public class Cadastro {
             System.out.println("Nenhuma pergunta disponível para excluir.");
             return;
         }
-
+        if (indice <4){
+            System.out.println("Erro não é permitido excluir as 4 primeiras perguntas");
+            return;
+        }
         if (indice >= 0 && indice < perguntas.size()) {
             perguntas.remove(indice);
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(FORMULARIO_ARQUIVO))) {
@@ -118,7 +161,7 @@ public class Cadastro {
                 System.err.println("Erro ao excluir pergunta: " + e.getMessage());
             }
         } else {
-            System.out.println("Número inválido.");
+            System.out.println("Número inválido. Escolha um número entre 5 e." + perguntas.size() + ".");
         }
     }
     public void pesquisarUsuario(String pesquisa) {
