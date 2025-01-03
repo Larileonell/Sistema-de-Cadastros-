@@ -1,35 +1,56 @@
+package dominio.repositorio;
+
+import dominio.entidade.usuario.Usuario;
+import dominio.exceptions.*;
+
 import java.io.*;
 import java.util.*;
 
 public class Cadastro {
     private static final String DIRETORIO_USUARIOS = "cadastros/";
     private static final String FORMULARIO_ARQUIVO = "formulario.txt";
-
-    public void cadastrarUsuario(Usuario usuario) {
-        try {
-            // Cria o diretório de cadastros, se não existir
-            File diretorio = new File(DIRETORIO_USUARIOS);
-            if (!diretorio.exists()) {
-                diretorio.mkdir(); // Cria o diretório
-            }
-
-            // Define o nome do arquivo com base no nome do usuário
-            String nomeArquivo = DIRETORIO_USUARIOS + usuario.getNome().toUpperCase().replaceAll("[^A-Za-z0-9]", "") + ".txt";
-
-            // Salva as respostas no arquivo
-            salvarRespostasEmArquivo(nomeArquivo, usuario);
-
-            System.out.println("Cadastro realizado com sucesso! Arquivo: " + nomeArquivo);
-        } catch (IOException e) {
-            System.err.println("Erro ao cadastrar o usuário: " + e.getMessage());
+    public Cadastro() {
+        File diretorio = new File(DIRETORIO_USUARIOS);
+        if (!diretorio.exists()) {
+            diretorio.mkdir();
         }
     }
 
+    public void cadastrarUsuario(Usuario usuario) throws NameFormatException, EmailFormatException, EmailExistException,
+            AgeException, HeightFormatException {
+        List<String> erros = new ArrayList<>();
+        if (usuario.getNome().length()<10){
+            throw new NameFormatException();
+        }
+        if (!usuario.getEmail().contains("@")){
+            throw  new EmailFormatException();
+        }
+        if (emailJaCadastrado(usuario.getEmail())){
+            throw new EmailExistException();
+        }
+        if (usuario.getIdade()<= 18){
+            throw  new AgeException();
+        }
+        if (usuario.getAltura().contains(",")){
+            throw new HeightFormatException();
+        }
+        File arquivoUsuario = new File(DIRETORIO_USUARIOS + "/" + usuario.getEmail() + ".txt");
+        try (FileWriter writer = new FileWriter(arquivoUsuario)) {
+            writer.write(usuario.toString());
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar o usuário: " + e.getMessage());
+        }
+
+    }
+    public boolean emailJaCadastrado (String email){
+        File arquivo = new File(DIRETORIO_USUARIOS + "/" + ".txt");
+        return arquivo.exists();
+    }
+
     public void salvarRespostasEmArquivo(String nomeArquivo, Usuario usuario) throws IOException {
-        // Abre o arquivo para escrita
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArquivo))) {
             writer.write("Nome: " + usuario.getNome());
-            writer.newLine();  // Adiciona uma nova linha
+            writer.newLine();
 
             writer.write("Email: " + usuario.getEmail());
             writer.newLine();
@@ -46,7 +67,7 @@ public class Cadastro {
 
     public void listarUsuarios() {
         File diretorio = new File(DIRETORIO_USUARIOS);
-        File[] arquivos = diretorio.listFiles((dir, name) -> name.endsWith(".txt")); // Filtra arquivos .txt
+        File[] arquivos = diretorio.listFiles((dir, name) -> name.endsWith(".txt"));
 
         if (arquivos != null && arquivos.length > 0) {
             System.out.println("Usuários cadastrados:");
@@ -63,7 +84,6 @@ public class Cadastro {
             System.out.println("Nenhum usuário cadastrado.");
         }
     }
-
     private String formatarNome(String nome) {
         String nomeComEspacos = nome.replaceAll("([a-z])([A-Z])", "$1 $2");
         String[] partesNome = nomeComEspacos.split(" ");
@@ -82,10 +102,9 @@ public class Cadastro {
         List<String> perguntas = new ArrayList<>();
         File arquivoFormulario = new File(FORMULARIO_ARQUIVO);
 
-        // Verifica se o arquivo existe
         if (!arquivoFormulario.exists()) {
             try {
-                // Cria o arquivo vazio e adiciona perguntas iniciais
+
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(FORMULARIO_ARQUIVO))) {
                     writer.write("Qual seu nome completo?");
                     writer.newLine();
@@ -102,7 +121,6 @@ public class Cadastro {
             }
         }
 
-        // Continua a leitura do arquivo
         try (BufferedReader br = new BufferedReader(new FileReader(FORMULARIO_ARQUIVO))) {
             String linha;
             while ((linha = br.readLine()) != null) {
@@ -195,20 +213,15 @@ public class Cadastro {
         if (arquivos != null && arquivos.length > 0) {
             List<String> usuariosEncontrados = new ArrayList<>();
 
-            // Iterar sobre os arquivos e verificar se o nome do usuário contém o termo pesquisado
             for (File arquivo : arquivos) {
                 String nomeUsuario = arquivo.getName().replace(".txt", "");
 
-                // Verifica se o nome do usuário contém o termo, ignorando maiúsculas e minúsculas
                 if (nomeUsuario.toLowerCase().contains(termo.toLowerCase())) {
-                    usuariosEncontrados.add(formatarNome(nomeUsuario)); // Adiciona o nome formatado à lista
+                    usuariosEncontrados.add(formatarNome(nomeUsuario));
                 }
             }
 
-            // Ordena os usuários encontrados
             Collections.sort(usuariosEncontrados);
-
-            // Exibe os resultados
             if (!usuariosEncontrados.isEmpty()) {
                 System.out.println("Usuários encontrados:");
                 for (int i = 0; i < usuariosEncontrados.size(); i++) {
@@ -221,6 +234,7 @@ public class Cadastro {
             System.out.println("Nenhum usuário cadastrado.");
         }
     }
+
     }
 
 

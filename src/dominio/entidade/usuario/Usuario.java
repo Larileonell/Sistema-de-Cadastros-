@@ -1,10 +1,12 @@
+package dominio.entidade.usuario;
+
 public class Usuario {
     private String nome;
     private String email;
     private int idade;
-    private double altura;
+    private String altura;
 
-    public Usuario(String nome, String email, int idade, double altura) {
+    public Usuario(String nome, String email, int idade, String altura) {
         this.nome = nome;
         this.email = email;
         this.idade = idade;
@@ -23,7 +25,7 @@ public class Usuario {
         return idade;
     }
 
-    public double getAltura() {
+    public String getAltura() {
         return altura;
     }
     public void exibirInformacoes() {
@@ -35,7 +37,7 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" +
+        return "dominio.entidade.usuario.Usuario{" +
                 "nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
                 ", idade=" + idade +
