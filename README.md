@@ -38,7 +38,7 @@ Sistema de cadastro de usuários via CLI (Interface de Linha de Comando) desenvo
 
 1. Clone o repositório:
    ```bash
-   git clone <URL_DO_REPOSITORIO>
+   git clone <https://github.com/Larileonell/Sistema-de-Cadastros>
  
   
 - Faça um fork do repositório.
