@@ -34,7 +34,7 @@ Sistema de cadastro de usuários via CLI (Interface de Linha de Comando) desenvo
   - Busca de usuários por nome ou email.
 
 ## 📂 Como Rodar o Projeto
-🎯 link do desafio do proejeto: https://docs.google.com/document/d/12ek1Wsd_ibuwTOjHtLPZwEWdy5-A7cRoO2Bf-v5G1_s/edit?tab=t.0
+🎯 link do desafio do projeto: https://docs.google.com/document/d/12ek1Wsd_ibuwTOjHtLPZwEWdy5-A7cRoO2Bf-v5G1_s/edit?tab=t.0
 
 1. Clone o repositório:
    ```bash
